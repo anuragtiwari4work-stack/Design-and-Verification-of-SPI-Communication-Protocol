@@ -2,6 +2,12 @@
 
 A complete SystemVerilog implementation of SPI (Serial Peripheral Interface) communication protocol with comprehensive testbench verification environment.
 
+## Repository Structure
+
+This repository contains two main files:
+- **`design.sv`** - Complete hardware implementation (interface, master, slave, top module)
+- **`testbench.sv`** - Full verification environment with UVM-style architecture
+
 ## Overview
 
 This project implements a full SPI communication system consisting of:
@@ -99,11 +105,16 @@ The testbench follows UVM-style layered architecture:
 ```bash
 # Compile and run with your SystemVerilog simulator
 # For example, with ModelSim/QuestaSim:
-vlog *.sv
+vlog design.sv testbench.sv
 vsim -c tb -do "run -all"
 
 # Or with other simulators:
-xvlog *.sv && xelab tb && xsim tb -R
+xvlog design.sv testbench.sv && xelab tb && xsim tb -R
+
+# For Vivado simulator:
+xvlog design.sv testbench.sv
+xelab -debug typical tb
+xsim tb -gui
 ```
 
 ### Customizing Tests
@@ -139,13 +150,25 @@ done    _____________________|‾‾‾‾|____
 ## File Structure
 
 ```
-├── spi_master.sv       # SPI master module
-├── spi_slave.sv        # SPI slave module  
-├── top.sv             # Top-level integration
+├── design.sv          # Complete SPI system (master, slave, top, interface)
 ├── testbench.sv       # Complete verification environment
-├── spi_if.sv          # SystemVerilog interface
 └── README.md          # This file
 ```
+
+### design.sv Contents:
+- `spi_if` - SystemVerilog interface definition
+- `spi_master` - SPI master module
+- `spi_slave` - SPI slave module  
+- `top` - Top-level integration module
+
+### testbench.sv Contents:
+- `transaction` - Transaction class
+- `generator` - Stimulus generation class
+- `driver` - Driver class
+- `monitor` - Monitor class
+- `scoreboard` - Checker class
+- `environment` - Test environment class
+- `tb` - Testbench top module
 
 ## Design Considerations
 
